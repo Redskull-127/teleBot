@@ -1,0 +1,12 @@
+{
+  "name": "damp-snow-64cb",
+  "version": "0.0.0",
+  "devDependencies": {
+    "wrangler": "2.2.2"
+  },
+  "private": true,
+  "scripts": {
+    "start": "wrangler dev",
+    "deploy": "wrangler publish"
+  }
+}

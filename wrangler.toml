@@ -1,0 +1,11 @@
+name = "damp-snow-64cb"
+main = "src/index.js"
+compatibility_date = "2022-11-15"
+usage_model = "bundled"
+env = { }
+
+[triggers]
+crons = [ ]
+
+[vars]
+API_KEY = "5744317137:AAG5ZKqGQXLnZLxcd-kkQzCrZhlP0XuPmMU"
