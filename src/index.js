@@ -1,13 +1,36 @@
 // src/index.js
 
-const someHost = 'https://damp-snow-64cb.meertarbani.workers.dev/';
-const url = someHost + '/src/data';
+const url = `https://raw.githubusercontent.com/Redskull-127/teleBot/main/src/data.html`
 
+async function gatherResponse(response) {
+  const { headers } = response;
+  const contentType = headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return JSON.stringify(await response.json());
+  } else if (contentType.includes("application/text")) {
+    return response.text();
+  } else if (contentType.includes("text/html")) {
+    return response.text();
+  } else {
+    return response.text();
+  }
+}
+
+async function handleData() {
+  const init = {
+    headers: {
+      "content-type": "text/html;charset=UTF-8",
+    },
+  };
+  const response = await fetch(url, init);
+  const results = await gatherResponse(response);
+  return new Response(results, init);
+}
 
 var src_default = {
   async fetch(request, env) {
     return await handleRequest(request);
-  }
+  },
 };
 async function handleRequest(request) {
   if (request.method === "POST") {
@@ -20,7 +43,11 @@ async function handleRequest(request) {
  Enter/Paste YouTube or Spotify link to download!`;
         const data = await fetch(url + text).then((resp) => resp.json());
       }
-      if (payload.message.text.substring(0, 24) === "https://www.youtube.com/" || payload.message.text.substring(0, 19) === "https://youtube.com" || payload.message.text.substring(0, 11) === `https://you`) {
+      if (
+        payload.message.text.substring(0, 24) === "https://www.youtube.com/" ||
+        payload.message.text.substring(0, 19) === "https://youtube.com" ||
+        payload.message.text.substring(0, 11) === `https://you`
+      ) {
         const text = `Open the link below for downloading 
  https://convert2mp3s.com/api/widgetv2?url=${payload.message.text} 
 . 
@@ -29,7 +56,9 @@ async function handleRequest(request) {
  Made with \u2764\uFE0F by Meer Tarbani`;
         const data = await fetch(url + text).then((resp) => resp.json());
       }
-      if (payload.message.text.substring(0, 25) === "https://open.spotify.com/") {
+      if (
+        payload.message.text.substring(0, 25) === "https://open.spotify.com/"
+      ) {
         const text = `coming soon`;
         const data = await fetch(url + text).then((resp) => resp.json());
       }
@@ -45,9 +74,8 @@ async function handleRequest(request) {
       }
     }
   }
-  return new Response(`https://t.me/meertarbanibot`);
+  return await handleData();
 }
-export {
-  src_default as default
-};
+
+export { src_default as default };
 //# sourceMappingURL=index.js.map
